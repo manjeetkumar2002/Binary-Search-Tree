@@ -85,3 +85,29 @@ bool canRepresentBST(vector<int> &pre) {
         if(index==pre.size()) return true;
         else return false;
 }
+
+// problem4 :Preorder to BST
+// Given an array pre[] representing the preorder traversal of a Binary Search Tree. Construct the corresponding BST and return its root.
+
+// Note: All node values are distinct.
+Node * createFromPreorder(vector<int> &preorder,int& index,int& lower,int& upper){
+
+      if(index==preorder.size()) return nullptr;
+
+      // agar range me nhi h to iss node ko as a child of root nhi kar sakte create
+      if(preorder[index]<lower or preorder[index]>upper) return nullptr;
+
+      // if current preorder node lies in the range (lower,upper) create it
+      Node * root = new Node(preorder[index]);
+      index++;
+      root->left = createFromPreorder(preorder,index,lower,root->data);
+      root->right = createFromPreorder(preorder,index,root->data,upper);
+      return root;
+  }
+Node* preToBST(vector<int>& pre) {
+        // code here
+        int lower = INT64_MIN;
+        int upper = INT64_MAX;
+        int index = 0;
+        return createFromPreorder(pre,index,lower,upper);
+    }
